@@ -3,40 +3,39 @@ package com.s3;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.utils.AOPUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/v1/s3")
+@Slf4j
 public class S3Controller {
+    private  final Logger logger = LoggerFactory.getLogger(S3Controller.class);
     @Autowired
     AmazonS3 S3;
-    @PostMapping
-    public static void upLoad(){
-        long startMillis = System.currentTimeMillis();
-        long endMillis;
-        PutObjectResult result = null;
+    @Value("${bucketName}")
+    private String bucketName;
+    @PostMapping(value = "/upload")
+    public void upLoad(){
         try {
-//            PutObjectRequest putObjectRequest = new PutObjectRequest("devbucket-wsq", "", file);
-//            String name = file.getName();
-//            //新增文件目录 performanceFile
-//            // 记录文件类型
-//            ObjectMetadata metadata = new ObjectMetadata();
-//            metadata.addUserMetadata(FILE_TYPE, name.substring(name.lastIndexOf(".") + 1));
-//            putObjectRequest.setMetadata(metadata);
-//            result = S3.putObject(putObjectRequest);
-            endMillis = System.currentTimeMillis();
-        } catch (AmazonServiceException e) {
-            endMillis = System.currentTimeMillis();
-        } catch (SdkClientException e) {
-            // Amazon S3 couldn't be contacted for a response, or the client
-            // couldn't parse the response from Amazon S3.
-
+            List<Bucket> buckets = S3.listBuckets();
+            S3.putObject(bucketName,"test/CV.docx",new File("C:\\Users\\86138\\Desktop\\CV.docx"));
+        }catch (Exception exception){
+            exception.printStackTrace();
         }
 
     }

@@ -1,36 +1,25 @@
 package com.utils;
-
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.Protocol;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
-
-import javax.servlet.http.HttpServlet;
 
 @Configuration
-@Data
 public class AwsUtilsConfig {
     @Value("${accessKey}")
     private  String accessKey;
     @Value("${secretKey}")
     private  String secretKey;
     @Value("${bucketName}")
-    private String bucketName = "devbucket-wsq";
+    private String bucketName;
     //获取AWS 连接
     public  AWSCredentialsProvider getAwsProvider(){
         return new AWSCredentialsProvider() {
